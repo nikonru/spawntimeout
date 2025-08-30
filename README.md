@@ -27,9 +27,4 @@ This command creates a `build/libs` folder in your repository. You can find the 
 
 # How it works
 
-When a player enters the server for the first time, the mod puts them into Spectator mode and lets them choose a spawn area.
-Once the player selects an area, the mod tries random block positions on the area’s heightmap. 
-When it finds a valid position, it teleports the player there and switches their game mode back.  
-**Note:** Currently only Creative and Survival game modes are supported. Players cannot start in Adventure or Spectator mode.
-
-If the mod fails to find a suitable spawn position, it falls back to the world’s default spawn.
+When a player dies he is put in immobilized state and to the spectator mod, then server teleports him to some predefined position where player waits for respawn. 
