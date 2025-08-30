@@ -30,7 +30,8 @@ public class RespawnTimerHandler {
 
         long now = System.currentTimeMillis();
         player.getPersistentData().putLong(LAST_DEATH_KEY, now);
-        player.setGameMode(GameType.SPECTATOR);
+        
+        // don't put a player into spectator mode here, so game can process all events for survival player
 
         waitingPlayers.put(player.getUUID(), player);
     }
@@ -70,6 +71,10 @@ public class RespawnTimerHandler {
             long remainingMillis = respawnDelayMillis - (now - lastDeath);
 
             if (remainingMillis > 0) {
+                if (player.gameMode.getGameModeForPlayer() != GameType.SPECTATOR) {
+                    player.setGameMode(GameType.SPECTATOR);
+                }
+
                 long remainingSeconds = (remainingMillis + 999) / 1000;
                 player.displayClientMessage(Component.literal("Respawn in " + remainingSeconds + "s"), true);
 
