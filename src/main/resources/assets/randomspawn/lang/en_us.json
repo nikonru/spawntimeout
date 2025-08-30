@@ -1,0 +1,5 @@
+{
+  "info.spawntimeout.system.success": "You've been teleported randomly, good luck!",
+  "info.spawntimeout.system.failed": "Failed to find a proper place. RTP is canceled.",
+  "info.spawntimeout.gui.choose_spawn": "Choose spawn area."
+}

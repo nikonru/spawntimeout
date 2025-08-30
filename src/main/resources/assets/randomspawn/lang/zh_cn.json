@@ -1,0 +1,5 @@
+{
+  "info.spawntimeout.system.success": "你已被随机传送，祝你好运！",
+  "info.spawntimeout.system.failed": "没找到合适的位置，随机传送失败。",
+  "info.spawntimeout.gui.choose_spawn": "選擇產卵區域。"
+}
