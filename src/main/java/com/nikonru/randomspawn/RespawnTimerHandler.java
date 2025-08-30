@@ -48,7 +48,7 @@ public class RespawnTimerHandler {
                 waitingPlayers.put(player.getUUID(), player);
                 player.setGameMode(GameType.SPECTATOR);
             } else {
-                player.getPersistentData().remove(LAST_DEATH_KEY);
+                respawn(player);
             }
         }
     }
@@ -76,22 +76,8 @@ public class RespawnTimerHandler {
                 // putting player in "waiting room"
                 player.teleportTo(SpawnTimeoutConfig.x.get(), SpawnTimeoutConfig.y.get(), SpawnTimeoutConfig.z.get());
             } else {
-
-                BlockPos respawnPos = player.getRespawnPosition();
-                if (respawnPos == null) {
-                    respawnPos = player.getCommandSenderWorld().getSharedSpawnPos();
-                }
-
-                player.teleportTo(
-                        respawnPos.getX() + 0.5,
-                        respawnPos.getY(),
-                        respawnPos.getZ() + 0.5
-                );
-
-                player.setGameMode(GameType.SURVIVAL);
-                player.getPersistentData().remove(LAST_DEATH_KEY);
                 iterator.remove();
-                player.displayClientMessage(Component.literal(""), true);
+                respawn(player);
             }
         }
     }
@@ -103,5 +89,22 @@ public class RespawnTimerHandler {
         if (waitingPlayers.containsKey(player.getUUID())) {
             player.setGameMode(GameType.SPECTATOR);
         }
+    }
+
+    private static void respawn(ServerPlayer player){
+        BlockPos respawnPos = player.getRespawnPosition();
+        if (respawnPos == null) {
+            respawnPos = player.getCommandSenderWorld().getSharedSpawnPos();
+        }
+
+        player.teleportTo(
+                respawnPos.getX() + 0.5,
+                respawnPos.getY(),
+                respawnPos.getZ() + 0.5
+        );
+
+        player.setGameMode(GameType.SURVIVAL);
+        player.getPersistentData().remove(LAST_DEATH_KEY);
+        player.displayClientMessage(Component.literal(""), true);
     }
 }
