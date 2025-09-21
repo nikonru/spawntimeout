@@ -104,7 +104,7 @@ public class RespawnTimerHandler {
 
         player.teleportTo(
                 respawnPos.getX() + 0.5,
-                respawnPos.getY(),
+                respawnPos.getY() + 1,
                 respawnPos.getZ() + 0.5
         );
 
