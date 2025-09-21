@@ -4,8 +4,10 @@ import com.nikonru.spawntimeout.config.SpawnTimeoutConfig;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -13,6 +15,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Optional;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -102,9 +105,25 @@ public class RespawnTimerHandler {
             respawnPos = player.getCommandSenderWorld().getSharedSpawnPos();
         }
 
+        ServerLevel level = player.serverLevel();
+        boolean isRespawnBlockStillThere = ServerPlayer.findRespawnPositionAndUseSpawnBlock(
+                level,
+                respawnPos,
+                player.getRespawnAngle(),
+                player.isRespawnForced(),
+                false
+        ).isPresent();
+
+        if(!isRespawnBlockStillThere){
+            // let's trigger event of setting new spawn point, so other mods could handle it as they wish
+            // null position is simply the worlds spawn
+            player.setRespawnPosition(level.dimension(), null, 0, true, false);
+            respawnPos = player.getRespawnPosition();
+        }
+
         player.teleportTo(
                 respawnPos.getX() + 0.5,
-                respawnPos.getY(),
+                respawnPos.getY() + 1,
                 respawnPos.getZ() + 0.5
         );
 
